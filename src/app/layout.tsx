@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Cooperativa Valgotra',
   description: 'Servizi di qualità dal 1985 con passione, innovazione e rispetto per l\'ambiente',
+  icons: {
+    icon: '/images/logo.png',
+  }
 }
 
 export default function RootLayout({

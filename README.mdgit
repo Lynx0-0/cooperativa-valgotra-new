@@ -1,0 +1,1 @@
+"# cooperativa-valgotra"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin git@github.com:Lynx0-0/cooperativa-valgotra.gitgit push -u origin main

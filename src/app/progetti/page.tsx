@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
 import { 
   Calendar, 
   ChevronLeft, 
@@ -23,7 +22,6 @@ export default function ProgettiPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
-  const [searchTerm, setSearchTerm] = useState("")
   
   // Caricamento dei progetti
   useEffect(() => {

@@ -73,27 +73,6 @@ export default function NegozioPage() {
   // Riferimento per scorrere verso la cima della pagina
   const topRef = useRef<HTMLDivElement>(null)
   
-  // Carica tutti i prodotti
-  const fetchProducts = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const data = await getAllProducts();
-      // Filtra solo i prodotti in stock per il display pubblico
-      const availableProducts = data.filter(product => product.in_stock);
-      setProducts(availableProducts);
-      filterProducts(availableProducts, categoryFilter, searchTerm);
-    } catch (error) {
-      console.error("Errore nel caricamento dei prodotti:", error);
-      toast.error("Impossibile caricare i prodotti. Riprova più tardi.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [categoryFilter, searchTerm]);
-  
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-  
   // Filtra i prodotti in base a categoria e termine di ricerca
   const filterProducts = useCallback((
     productList: Product[],
@@ -118,7 +97,28 @@ export default function NegozioPage() {
     }
     
     setFilteredProducts(filtered)
-  }, []);
+  }, [])
+  
+  // Carica tutti i prodotti
+  const fetchProducts = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const data = await getAllProducts();
+      // Filtra solo i prodotti in stock per il display pubblico
+      const availableProducts = data.filter(product => product.in_stock);
+      setProducts(availableProducts);
+      filterProducts(availableProducts, categoryFilter, searchTerm);
+    } catch (error) {
+      console.error("Errore nel caricamento dei prodotti:", error);
+      toast.error("Impossibile caricare i prodotti. Riprova più tardi.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [categoryFilter, searchTerm, filterProducts]);
+  
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
   
   // Aggiorna i filtri quando cambiano i valori
   useEffect(() => {
@@ -547,7 +547,7 @@ export default function NegozioPage() {
           </DialogHeader>
           
           <form onSubmit={handleSubmitOrder} className="py-4 space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Nome *</Label>
                 <Input

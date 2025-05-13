@@ -22,8 +22,9 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
-import { ImagePlus, X, Save, ArrowLeft, Trash2 } from "lucide-react"
-import { Project, updateProject, getAllProjects } from "@/lib/db"
+import { ImagePlus, X, Save, ArrowLeft, Trash2, CheckCircle } from "lucide-react"
+import { supabase } from "@/lib/supabase"
+import { Project, getAllProjects } from "@/lib/db"
 
 export default function EditProjectGalleryPage() {
   const params = useParams()
@@ -36,6 +37,44 @@ export default function EditProjectGalleryPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [projectId, setProjectId] = useState<string>("")
   const [error, setError] = useState<string | null>(null)
+  const [tableName, setTableName] = useState<string | null>(null)
+  const [saveSuccess, setSaveSuccess] = useState(false)
+  
+  // Ottieni il nome della tabella (debug)
+  useEffect(() => {
+    const getTableInfo = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('id')
+          .limit(1);
+        
+        if (error) {
+          console.error("Errore nell'accesso alla tabella 'projects':", error);
+          // Prova un nome alternativo
+          const { data: altData, error: altError } = await supabase
+            .from('progetti')
+            .select('id')
+            .limit(1);
+          
+          if (!altError) {
+            setTableName('progetti');
+            console.log("Tabella corretta trovata: 'progetti'");
+          } else {
+            console.error("Errore nell'accesso alla tabella 'progetti':", altError);
+            setTableName('sconosciuta');
+          }
+        } else {
+          setTableName('projects');
+          console.log("Tabella corretta trovata: 'projects'");
+        }
+      } catch (error) {
+        console.error("Errore nel controllo della tabella:", error);
+      }
+    };
+    
+    getTableInfo();
+  }, []);
   
   // Carica il progetto
   useEffect(() => {
@@ -114,7 +153,12 @@ export default function EditProjectGalleryPage() {
     toast.success("Immagine rimossa dalla galleria")
   }
   
-  // Salva le modifiche al progetto
+  // Torna alla lista progetti
+  const goBackToProjects = () => {
+    router.push("/admin/dashboard")
+  }
+  
+  // Salva le modifiche al progetto - NUOVA IMPLEMENTAZIONE DIRETTA CON SUPABASE
   const saveChanges = async () => {
     if (!projectId) {
       console.error("ID progetto non disponibile")
@@ -125,6 +169,7 @@ export default function EditProjectGalleryPage() {
     try {
       setIsSaving(true)
       setError(null)
+      setSaveSuccess(false)
       console.log("Saving gallery images for project ID:", projectId)
       console.log("Images to save:", galleryImages)
       
@@ -135,19 +180,30 @@ export default function EditProjectGalleryPage() {
         return
       }
       
-      // Crea l'oggetto di aggiornamento
-      const updateData: Partial<Project> = {
-        gallery_images: galleryImages
+      // Determinare la tabella corretta da usare
+      const tableToUse = tableName === 'progetti' ? 'progetti' : 'projects';
+      console.log(`Usando tabella: ${tableToUse}`);
+      
+      // Aggiornamento diretto tramite Supabase client
+      const { data, error } = await supabase
+        .from(tableToUse)
+        .update({ gallery_images: galleryImages })
+        .eq('id', projectId)
+        .select();
+      
+      if (error) {
+        console.error("Errore Supabase:", error);
+        throw new Error(error.message || 'Errore Supabase');
       }
       
-      console.log("Update data:", updateData)
+      console.log("Update result:", data);
       
-      // Esegui l'aggiornamento
-      const result = await updateProject(projectId, updateData)
-      console.log("Update result:", result)
+      // Mostra un messaggio di successo senza reindirizzamento automatico
+      toast.success("Galleria salvata con successo");
+      setSaveSuccess(true);
       
-      toast.success("Galleria salvata con successo")
-      setTimeout(() => router.push("/admin/progetti"), 1000)
+      // Non reindirizzare automaticamente
+      // setTimeout(() => router.push("/admin/progetti"), 1000)
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Errore sconosciuto";
       console.error("Errore nel salvataggio della galleria:", error)
@@ -185,13 +241,14 @@ export default function EditProjectGalleryPage() {
           <Button 
             variant="outline" 
             size="sm" 
-            onClick={() => router.push("/admin/progetti")}
+            onClick={goBackToProjects}
             className="mb-2"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Torna ai progetti
           </Button>
           <h1 className="text-2xl font-bold">Modifica Galleria: {project?.title || '[Progetto]'}</h1>
+          {tableName && <p className="text-sm text-gray-500">Tabella: {tableName}</p>}
         </div>
         
         <Button 
@@ -213,6 +270,26 @@ export default function EditProjectGalleryPage() {
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
           <strong>Errore:</strong> {error}
+        </div>
+      )}
+      
+      {saveSuccess && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 flex items-center">
+          <CheckCircle className="h-5 w-5 mr-2" />
+          <div>
+            <strong>Successo!</strong> La galleria è stata salvata correttamente.
+            <div className="mt-2">
+              <Button 
+                onClick={goBackToProjects} 
+                variant="outline" 
+                size="sm"
+                className="text-green-700 border-green-400 hover:bg-green-50"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Torna alla lista progetti
+              </Button>
+            </div>
+          </div>
         </div>
       )}
       
@@ -272,7 +349,7 @@ export default function EditProjectGalleryPage() {
         <CardFooter className="flex justify-between border-t pt-6">
           <Button 
             variant="outline" 
-            onClick={() => router.push("/admin/progetti")}
+            onClick={goBackToProjects}
             type="button"
           >
             Annulla

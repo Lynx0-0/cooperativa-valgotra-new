@@ -394,17 +394,39 @@ export async function saveProject(project: Project) {
 
 export async function updateProject(id: string, project: Partial<Project>) {
   try {
+    console.log('Updating project with ID:', id);
+    console.log('Data to update:', project);
+    
+    // Assicuriamoci che gallery_images sia un array se presente
+    if (project.gallery_images && !Array.isArray(project.gallery_images)) {
+      project.gallery_images = [];
+      console.warn('gallery_images non è un array, convertito in array vuoto');
+    }
+    
     const { data, error } = await supabase
       .from('projects')
       .update(project)
       .eq('id', id)
       .select();
     
-    if (error) throw error;
+    if (error) {
+      console.error('Errore Supabase:', error);
+      throw error;
+    }
+    
+    console.log('Progetto aggiornato con successo:', data);
     return data;
   } catch (error) {
-    console.error('Errore nell\'aggiornamento del progetto:', error);
-    throw error;
+    // Mostriamo dettagli completi dell'errore
+    console.error('Errore dettagliato nell\'aggiornamento del progetto:', error);
+    
+    // Riformattiamo l'errore per garantire che contenga informazioni utili
+    const formattedError = {
+      message: error instanceof Error ? error.message : 'Errore sconosciuto',
+      details: error
+    };
+    
+    throw formattedError;
   }
 }
 

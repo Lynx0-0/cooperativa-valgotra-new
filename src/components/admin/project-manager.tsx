@@ -41,8 +41,11 @@ import {
   X, 
   Briefcase,
   ImageIcon,
-  Calendar
+  Calendar,
+  Images
 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { 
   getAllProjects, 
   saveProject, 
@@ -66,11 +69,12 @@ const PROJECT_CATEGORIES = [
 ]
 
 export default function ProjectManager() {
+  const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-  const [categoryFilter, setCategoryFilter] = useState<string>("")
+  const [categoryFilter, setCategoryFilter] = useState<string>("all") // Modificato da "" a "all"
   const [searchTerm, setSearchTerm] = useState("")
   const [editProject, setEditProject] = useState<Project | null>(null)
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null)
@@ -82,7 +86,8 @@ export default function ProjectManager() {
     completion_date: "",
     client: "",
     category: "",
-    featured: false
+    featured: false,
+    gallery_images: []
   })
   
   // Carica i progetti
@@ -105,7 +110,7 @@ export default function ProjectManager() {
   
   // Filtra i progetti
   const filteredProjects = projects.filter(project => {
-    const matchesCategory = categoryFilter ? project.category === categoryFilter : true
+    const matchesCategory = categoryFilter === "all" ? true : project.category === categoryFilter // Modificato
     const matchesSearch = searchTerm
       ? project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -147,7 +152,8 @@ export default function ProjectManager() {
       completion_date: "",
       client: "",
       category: "",
-      featured: false
+      featured: false,
+      gallery_images: []
     })
     setEditProject(null)
   }
@@ -156,7 +162,10 @@ export default function ProjectManager() {
   const handleOpenDialog = (project?: Project) => {
     if (project) {
       setEditProject(project)
-      setFormData(project)
+      setFormData({
+        ...project,
+        gallery_images: project.gallery_images || []
+      })
     } else {
       resetForm()
     }
@@ -167,6 +176,12 @@ export default function ProjectManager() {
   const handleOpenDeleteDialog = (project: Project) => {
     setProjectToDelete(project)
     setIsDeleteDialogOpen(true)
+  }
+  
+  // Vai alla pagina di gestione della galleria
+  const goToGalleryManager = (project: Project) => {
+    if (!project.id) return;
+    router.push(`/admin/progetti/${project.id}/galleria`);
   }
   
   // Salva o aggiorna un progetto
@@ -237,6 +252,11 @@ export default function ProjectManager() {
     }
   }
   
+  // Conta le immagini nella galleria
+  const countGalleryImages = (project: Project) => {
+    return project.gallery_images?.length || 0;
+  }
+  
   return (
     <div className="space-y-6">
       {/* Controlli */}
@@ -255,7 +275,7 @@ export default function ProjectManager() {
               <SelectValue placeholder="Tutte le categorie" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="nome">Tutte le categorie</SelectItem>
+              <SelectItem value="all">Tutte le categorie</SelectItem> {/* Modificato da "" a "all" */}
               {PROJECT_CATEGORIES.map(category => (
                 <SelectItem key={category} value={category}>{category}</SelectItem>
               ))}
@@ -283,7 +303,7 @@ export default function ProjectManager() {
           <CardContent className="p-12 text-center">
             <Briefcase className="mx-auto h-12 w-12 text-gray-300" />
             <p className="mt-2 text-gray-500">
-              {searchTerm || categoryFilter ? "Nessun progetto corrisponde ai criteri di ricerca" : "Nessun progetto trovato. Aggiungi il tuo primo progetto!"}
+              {searchTerm || categoryFilter !== "all" ? "Nessun progetto corrisponde ai criteri di ricerca" : "Nessun progetto trovato. Aggiungi il tuo primo progetto!"}
             </p>
           </CardContent>
         </Card>
@@ -295,6 +315,7 @@ export default function ProjectManager() {
               <TableHead>Categoria</TableHead>
               <TableHead>Cliente</TableHead>
               <TableHead>Data Completamento</TableHead>
+              <TableHead>Galleria</TableHead>
               <TableHead>In Evidenza</TableHead>
               <TableHead className="text-right">Azioni</TableHead>
             </TableRow>
@@ -304,10 +325,16 @@ export default function ProjectManager() {
               <TableRow key={project.id}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 bg-gray-100 rounded-md flex items-center justify-center flex-shrink-0">
+                    <div className="h-10 w-10 bg-gray-100 rounded-md flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {project.image_url ? (
-                        // In un'applicazione reale, qui ci sarebbe un'immagine
-                        <div className="h-full w-full bg-gray-200 rounded-md" />
+                        <Image 
+                          src={project.image_url} 
+                          alt={project.title}
+                          className="h-full w-full object-cover" 
+                          width={40}
+                          height={40}
+                          unoptimized={true}
+                        />
                       ) : (
                         <ImageIcon className="h-5 w-5 text-gray-400" />
                       )}
@@ -340,6 +367,14 @@ export default function ProjectManager() {
                   </div>
                 </TableCell>
                 <TableCell>
+                  <div className="flex items-center">
+                    <Images className="h-4 w-4 text-gray-400 mr-1.5" />
+                    <span>
+                      {countGalleryImages(project)} immagini
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell>
                   {project.featured ? (
                     <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
                       In Evidenza
@@ -353,7 +388,16 @@ export default function ProjectManager() {
                     <Button
                       variant="outline"
                       size="sm"
+                      onClick={() => goToGalleryManager(project)}
+                      title="Gestisci galleria immagini"
+                    >
+                      <Images className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
                       onClick={() => handleOpenDialog(project)}
+                      title="Modifica progetto"
                     >
                       <Pencil className="h-4 w-4" />
                     </Button>
@@ -362,6 +406,7 @@ export default function ProjectManager() {
                       size="sm"
                       onClick={() => handleOpenDeleteDialog(project)}
                       className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      title="Elimina progetto"
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -426,14 +471,14 @@ export default function ProjectManager() {
               <div className="space-y-2">
                 <Label htmlFor="category">Categoria</Label>
                 <Select 
-                  value={formData.category || ""} 
+                  value={formData.category || "nessuna"} // Modificato da "" a "nessuna"
                   onValueChange={(value) => handleSelectChange("category", value)}
                 >
                   <SelectTrigger id="category">
                     <SelectValue placeholder="Seleziona categoria" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="nome">Nessuna categoria</SelectItem>
+                    <SelectItem value="nessuna">Nessuna categoria</SelectItem> {/* Modificato da "" a "nessuna" */}
                     {PROJECT_CATEGORIES.map(category => (
                       <SelectItem key={category} value={category}>{category}</SelectItem>
                     ))}
@@ -454,7 +499,7 @@ export default function ProjectManager() {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="image_url">URL Immagine</Label>
+              <Label htmlFor="image_url">URL Immagine Principale</Label>
               <Input
                 id="image_url"
                 name="image_url"
@@ -463,6 +508,14 @@ export default function ProjectManager() {
                 placeholder="https://esempio.com/immagine.jpg"
               />
             </div>
+            
+            {editProject && (
+              <div className="pt-2">
+                <p className="text-sm text-gray-500 mb-2">
+                  Per gestire le immagini della galleria, salva prima le modifiche e poi usa il pulsante "Galleria" dalla lista progetti.
+                </p>
+              </div>
+            )}
             
             <div className="flex items-center space-x-2">
               <Checkbox

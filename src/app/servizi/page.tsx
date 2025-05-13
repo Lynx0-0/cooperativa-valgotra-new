@@ -118,7 +118,7 @@ export default function ServiziPage() {
         <div className="container text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-6">I Nostri Servizi</h1>
           <p className="text-lg md:text-xl max-w-3xl mx-auto">
-            Scopri la gamma completa di servizi che offriamo per la comunità e l'ambiente.
+            Scopri la gamma completa di servizi che offriamo per la comunità e l&apos;ambiente.
             Qualità, professionalità e sostenibilità sono i nostri valori fondamentali.
           </p>
         </div>
@@ -203,9 +203,9 @@ export default function ServiziPage() {
               <h3 className="text-xl font-bold mb-2">Operate anche in periodi invernali o di maltempo?</h3>
               <p className="text-gray-600">
                 Molti dei nostri servizi, specialmente quelli legati alla cura del verde, seguono 
-                la stagionalità e le condizioni meteorologiche. Tuttavia, servizi come l'installazione 
+                la stagionalità e le condizioni meteorologiche. Tuttavia, servizi come l&apos;installazione 
                 di dispositivi elettronici, la progettazione e alcuni lavori strutturali possono essere 
-                eseguiti durante tutto l'anno. Contattateci per verificare la disponibilità specifica.
+                eseguiti durante tutto l&apos;anno. Contattateci per verificare la disponibilità specifica.
               </p>
             </div>
           </div>

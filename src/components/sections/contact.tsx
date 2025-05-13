@@ -105,7 +105,7 @@ export default function Contact() {
               <p className="text-gray-600 text-lg mb-6">
                 Grazie per averci contattato. Il tuo messaggio è stato ricevuto correttamente.
                 <br />
-                Ti risponderemo al più presto all'indirizzo email che hai fornito.
+                Ti risponderemo al più presto all&apos;indirizzo email che hai fornito.
               </p>
               
               <Alert className="bg-green-50 border-green-200 mb-8">
@@ -150,7 +150,7 @@ export default function Contact() {
               </div>
               <h3 className="font-bold text-lg mb-2">Indirizzo</h3>
               <p className="text-gray-600">
-                LOCALITA' BRAIOLE 46 - 43051 - ALBARETO (PR) <br />
+                LOCALITA&apos; BRAIOLE 46 - 43051 - ALBARETO (PR) <br />
                 Valgotra, Italia
               </p>
             </Card>

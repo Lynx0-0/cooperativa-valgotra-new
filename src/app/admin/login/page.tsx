@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-bold">Area Amministrativa</CardTitle>
             <CardDescription>
-              Inserisci le tue credenziali per accedere all'area amministrativa
+              Inserisci le tue credenziali per accedere all&apos;area amministrativa
             </CardDescription>
           </CardHeader>
           <CardContent>

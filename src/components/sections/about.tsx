@@ -16,13 +16,13 @@ export default function About() {
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Chi Siamo</h2>
             <p className="text-gray-600 mb-4">
-              Cooperativa Valgotra è nata con l'obiettivo di fornire servizi di qualità nel rispetto 
-              dell'ambiente e delle persone. Da oltre 51 anni, lavoriamo con passione e dedizione 
+              Cooperativa Valgotra è nata con l&apos;obiettivo di fornire servizi di qualità nel rispetto 
+              dell&apos;ambiente e delle persone. Da oltre 51 anni, lavoriamo con passione e dedizione 
               per migliorare la qualità della vita nella nostra comunità.
             </p>
             <p className="text-gray-600 mb-8">
-              La nostra missione è quella di creare valore condiviso attraverso l'innovazione, 
-              la sostenibilità e l'impegno sociale. Crediamo fermamente nel potere della cooperazione 
+              La nostra missione è quella di creare valore condiviso attraverso l&apos;innovazione, 
+              la sostenibilità e l&apos;impegno sociale. Crediamo fermamente nel potere della cooperazione 
               e nella forza del lavoro di squadra.
             </p>
             
@@ -33,7 +33,7 @@ export default function About() {
                 </div>
                 <div>
                   <h5 className="font-bold text-lg mb-1">Sostenibilità</h5>
-                  <p className="text-gray-500 text-sm">Rispettiamo l'ambiente</p>
+                  <p className="text-gray-500 text-sm">Rispettiamo l&apos;ambiente</p>
                 </div>
               </div>
               

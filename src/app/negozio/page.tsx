@@ -445,7 +445,7 @@ export default function NegozioPage() {
           <DialogHeader>
             <DialogTitle>Il tuo carrello</DialogTitle>
             <DialogDescription>
-              Rivedi i prodotti nel tuo carrello prima di procedere all'ordine.
+              Rivedi i prodotti nel tuo carrello prima di procedere all&apos;ordine.
             </DialogDescription>
           </DialogHeader>
           
@@ -523,7 +523,7 @@ export default function NegozioPage() {
                   className="w-full bg-green-700 hover:bg-green-800"
                   onClick={proceedToCheckout}
                 >
-                  Procedi all'ordine
+                  Procedi all&apos;ordine
                 </Button>
               </div>
             </div>
@@ -537,7 +537,7 @@ export default function NegozioPage() {
           <DialogHeader>
             <DialogTitle>Completa il tuo ordine</DialogTitle>
             <DialogDescription>
-              Inserisci i tuoi dati per completare l'ordine. Ti contatteremo per confermare i dettagli.
+              Inserisci i tuoi dati per completare l&apos;ordine. Ti contatteremo per confermare i dettagli.
             </DialogDescription>
           </DialogHeader>
           

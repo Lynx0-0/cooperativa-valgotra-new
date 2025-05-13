@@ -8,7 +8,7 @@ export default function Footer() {
           <div>
             <h5 className="font-bold text-xl mb-4">Cooperativa Valgotra</h5>
             <p className="text-gray-300 mb-4">
-              Dal 1974 serviamo la comunità con passione e rispetto per l'ambiente.
+              Dal 1974 serviamo la comunità con passione e rispetto per l&apos;ambiente.
             </p>
           </div>
           
@@ -25,7 +25,7 @@ export default function Footer() {
           <div>
             <h5 className="font-bold uppercase mb-4">Contatti</h5>
             <address className="text-gray-300 not-italic">
-              <p>LOCALITA' BRAIOLE 46 - 43051 - ALBARETO (PR) </p>
+              <p>LOCALITA&apos; BRAIOLE 46 - 43051 - ALBARETO (PR) </p>
               <p>Valgotra, Italia</p>
               <p>Tel: +39 3282705422</p>
               <p>Email: coperativavalgotra54@gmail.com</p>

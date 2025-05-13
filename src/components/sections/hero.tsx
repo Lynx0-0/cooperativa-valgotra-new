@@ -20,7 +20,7 @@ export default function Hero() {
           Benvenuti alla Cooperativa Valgotra
         </h1>
         <p className="text-lg md:text-xl text-white max-w-3xl mx-auto mb-8">
-          Dal 1974 serviamo la comunità con passione, innovazione e rispetto per l'ambiente.
+          Dal 1974 serviamo la comunità con passione, innovazione e rispetto per l&apos;ambiente.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button asChild className="bg-green-700 hover:bg-green-800 text-white text-lg py-6 px-8">

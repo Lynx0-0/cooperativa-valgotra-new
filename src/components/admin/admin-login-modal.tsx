@@ -67,7 +67,7 @@ export default function AdminLoginModal({
             Accesso Area Amministrativa
           </DialogTitle>
           <DialogDescription>
-            Inserisci le tue credenziali per accedere all'area riservata
+            Inserisci le tue credenziali per accedere all&apos;area riservata
           </DialogDescription>
         </DialogHeader>
         

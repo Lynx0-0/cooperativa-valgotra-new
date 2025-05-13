@@ -88,7 +88,7 @@ export default function ProgettiPage() {
           <h1 className="text-3xl md:text-5xl font-bold mb-6">I Nostri Lavori</h1>
           <p className="text-lg md:text-xl max-w-3xl mx-auto">
             Scopri i progetti che abbiamo realizzato con passione e professionalità.
-            Ogni progetto racconta la nostra storia di impegno verso la comunità e l'ambiente.
+            Ogni progetto racconta la nostra storia di impegno verso la comunità e l&apos;ambiente.
           </p>
         </div>
       </section>

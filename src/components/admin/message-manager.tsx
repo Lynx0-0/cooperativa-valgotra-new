@@ -411,7 +411,7 @@ export default function MessageManager() {
                   {selectedMessage.archived ? (
                     <>
                       <Inbox size={16} />
-                      <span>Ripristina dall'archivio</span>
+                      <span>Ripristina dall&apos;archivio</span>
                     </>
                   ) : (
                     <>

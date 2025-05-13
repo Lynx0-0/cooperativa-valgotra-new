@@ -21,37 +21,37 @@ export default function PrivacyPage() {
                 </p>
                 
                 <p>
-                  Questa informativa è resa ai sensi dell'art. 13 del Regolamento UE 2016/679 (GDPR) a coloro che interagiscono con i servizi web di Cooperativa Valgotra, accessibili per via telematica a partire dal sito Coop. Valgotra.
+                  Questa informativa è resa ai sensi dell&apos;art. 13 del Regolamento UE 2016/679 (GDPR) a coloro che interagiscono con i servizi web di Cooperativa Valgotra, accessibili per via telematica a partire dal sito Coop. Valgotra.
                 </p>
                 
                 <p>
-                  L'informativa è resa solo per il sito di Cooperativa Valgotra e non anche per altri siti web eventualmente consultati dall'utente tramite link.
+                  L&apos;informativa è resa solo per il sito di Cooperativa Valgotra e non anche per altri siti web eventualmente consultati dall&apos;utente tramite link.
                 </p>
                 
                 <h2 className="text-2xl font-bold mt-8 mb-4">Titolare del Trattamento</h2>
                 <p>
-                  Il Titolare del trattamento dei dati personali è Cooperativa Valgotra con sede in LOCALITA' BRAIOLE 46 - 43051 - ALBARETO (PR), Italia.
+                  Il Titolare del trattamento dei dati personali è Cooperativa Valgotra con sede in LOCALITA&apos; BRAIOLE 46 - 43051 - ALBARETO (PR), Italia.
                 </p>
                 
                 <h2 className="text-2xl font-bold mt-8 mb-4">Tipi di Dati Trattati</h2>
                 
                 <h3 className="text-xl font-bold mt-6 mb-3">Dati di navigazione</h3>
                 <p>
-                  I sistemi informatici e le procedure software preposte al funzionamento di questo sito web acquisiscono, nel corso del loro normale esercizio, alcuni dati personali la cui trasmissione è implicita nell'uso dei protocolli di comunicazione di Internet.
+                  I sistemi informatici e le procedure software preposte al funzionamento di questo sito web acquisiscono, nel corso del loro normale esercizio, alcuni dati personali la cui trasmissione è implicita nell&apos;uso dei protocolli di comunicazione di Internet.
                 </p>
                 <p>
                   Si tratta di informazioni che non sono raccolte per essere associate a interessati identificati, ma che per loro stessa natura potrebbero, attraverso elaborazioni ed associazioni con dati detenuti da terzi, permettere di identificare gli utenti.
                 </p>
                 <p>
-                  In questa categoria di dati rientrano gli indirizzi IP o i nomi a dominio dei computer utilizzati dagli utenti che si connettono al sito, gli indirizzi in notazione URI (Uniform Resource Identifier) delle risorse richieste, l'orario della richiesta, il metodo utilizzato nel sottoporre la richiesta al server, la dimensione del file ottenuto in risposta, il codice numerico indicante lo stato della risposta data dal server (buon fine, errore, ecc.) ed altri parametri relativi al sistema operativo e all'ambiente informatico dell'utente.
+                  In questa categoria di dati rientrano gli indirizzi IP o i nomi a dominio dei computer utilizzati dagli utenti che si connettono al sito, gli indirizzi in notazione URI (Uniform Resource Identifier) delle risorse richieste, l&apos;orario della richiesta, il metodo utilizzato nel sottoporre la richiesta al server, la dimensione del file ottenuto in risposta, il codice numerico indicante lo stato della risposta data dal server (buon fine, errore, ecc.) ed altri parametri relativi al sistema operativo e all&apos;ambiente informatico dell&apos;utente.
                 </p>
                 <p>
-                  Questi dati vengono utilizzati al solo fine di ricavare informazioni statistiche anonime sull'uso del sito e per controllarne il corretto funzionamento e vengono cancellati immediatamente dopo l'elaborazione.
+                  Questi dati vengono utilizzati al solo fine di ricavare informazioni statistiche anonime sull&apos;uso del sito e per controllarne il corretto funzionamento e vengono cancellati immediatamente dopo l&apos;elaborazione.
                 </p>
                 
-                <h3 className="text-xl font-bold mt-6 mb-3">Dati forniti volontariamente dall'utente</h3>
+                <h3 className="text-xl font-bold mt-6 mb-3">Dati forniti volontariamente dall&apos;utente</h3>
                 <p>
-                  L'invio facoltativo, esplicito e volontario di posta elettronica agli indirizzi indicati su questo sito comporta la successiva acquisizione dell'indirizzo del mittente, necessario per rispondere alle richieste, nonché degli eventuali altri dati personali inseriti nella missiva.
+                  L&apos;invio facoltativo, esplicito e volontario di posta elettronica agli indirizzi indicati su questo sito comporta la successiva acquisizione dell&apos;indirizzo del mittente, necessario per rispondere alle richieste, nonché degli eventuali altri dati personali inseriti nella missiva.
                 </p>
                 <p>
                   Specifiche informative di sintesi vengono inoltre riportate o visualizzate nelle pagine del sito predisposte per particolari servizi a richiesta.
@@ -64,22 +64,22 @@ export default function PrivacyPage() {
                 
                 <h3 className="text-xl font-bold mt-6 mb-3">Modulo di contatto</h3>
                 <p>
-                  I dati personali acquisiti attraverso il modulo di contatto o l'invio di una email a Cooperativa Valgotra saranno utilizzati per rispondere alle richieste degli utenti. Tali dati saranno conservati per il tempo necessario a fornire il riscontro e successivamente per il periodo previsto dalla normativa vigente.
+                  I dati personali acquisiti attraverso il modulo di contatto o l&apos;invio di una email a Cooperativa Valgotra saranno utilizzati per rispondere alle richieste degli utenti. Tali dati saranno conservati per il tempo necessario a fornire il riscontro e successivamente per il periodo previsto dalla normativa vigente.
                 </p>
                 
                 <h3 className="text-xl font-bold mt-6 mb-3">Prenotazione chiamate</h3>
                 <p>
-                  I dati personali acquisiti attraverso il servizio di prenotazione chiamate saranno utilizzati esclusivamente per organizzare e gestire il contatto telefonico richiesto. Tali dati saranno conservati per il tempo necessario all'erogazione del servizio e successivamente per il periodo previsto dalla normativa vigente.
+                  I dati personali acquisiti attraverso il servizio di prenotazione chiamate saranno utilizzati esclusivamente per organizzare e gestire il contatto telefonico richiesto. Tali dati saranno conservati per il tempo necessario all&apos;erogazione del servizio e successivamente per il periodo previsto dalla normativa vigente.
                 </p>
                 
                 <h3 className="text-xl font-bold mt-6 mb-3">Acquisti online</h3>
                 <p>
-                  I dati personali forniti per l'acquisto di prodotti attraverso il negozio online saranno utilizzati per l'evasione degli ordini, la gestione dei pagamenti e per le comunicazioni relative all'ordine. Tali dati saranno conservati per il tempo necessario all'erogazione del servizio e successivamente per il periodo previsto dalla normativa fiscale e contabile.
+                  I dati personali forniti per l&apos;acquisto di prodotti attraverso il negozio online saranno utilizzati per l&apos;evasione degli ordini, la gestione dei pagamenti e per le comunicazioni relative all&apos;ordine. Tali dati saranno conservati per il tempo necessario all&apos;erogazione del servizio e successivamente per il periodo previsto dalla normativa fiscale e contabile.
                 </p>
                 
                 <h2 className="text-2xl font-bold mt-8 mb-4">Base Giuridica del Trattamento</h2>
                 <p>
-                  La base giuridica del trattamento dei dati personali è costituita dal consenso dell'interessato, dall'esecuzione di obblighi contrattuali o precontrattuali, nonché dal legittimo interesse del titolare del trattamento alla corretta gestione del sito web ed all'erogazione dei servizi richiesti.
+                  La base giuridica del trattamento dei dati personali è costituita dal consenso dell&apos;interessato, dall&apos;esecuzione di obblighi contrattuali o precontrattuali, nonché dal legittimo interesse del titolare del trattamento alla corretta gestione del sito web ed all&apos;erogazione dei servizi richiesti.
                 </p>
                 
                 <h2 className="text-2xl font-bold mt-8 mb-4">Modalità e Luogo del Trattamento</h2>
@@ -92,21 +92,21 @@ export default function PrivacyPage() {
                 
                 <h2 className="text-2xl font-bold mt-8 mb-4">Cookie e Tecnologie di Tracciamento</h2>
                 <p>
-                  Il nostro sito utilizza cookie tecnici per migliorare l'esperienza di navigazione.
+                  Il nostro sito utilizza cookie tecnici per migliorare l&apos;esperienza di navigazione.
                 </p>
                 <p>
-                  I cookie sono piccoli file di testo che i siti visitati inviano al terminale dell'utente, dove vengono memorizzati, per poi essere ritrasmessi agli stessi siti alla visita successiva.
+                  I cookie sono piccoli file di testo che i siti visitati inviano al terminale dell&apos;utente, dove vengono memorizzati, per poi essere ritrasmessi agli stessi siti alla visita successiva.
                 </p>
                 
                 <h2 className="text-2xl font-bold mt-8 mb-4">Diritti degli Interessati</h2>
                 <p>
-                  Gli interessati hanno il diritto di ottenere dal Titolare, nei casi previsti, l'accesso ai propri dati personali e la rettifica o la cancellazione degli stessi o la limitazione del trattamento che li riguarda o di opporsi al trattamento (artt. 15 e ss. del GDPR).
+                  Gli interessati hanno il diritto di ottenere dal Titolare, nei casi previsti, l&apos;accesso ai propri dati personali e la rettifica o la cancellazione degli stessi o la limitazione del trattamento che li riguarda o di opporsi al trattamento (artt. 15 e ss. del GDPR).
                 </p>
                 <p>
                   Le richieste possono essere presentate contattando il Titolare del trattamento ai seguenti recapiti:
                 </p>
                 <ul className="list-disc pl-5 my-4">
-                  <li>Via posta: LOCALITA' BRAIOLE 46 - 43051 - ALBARETO (PR), Italia</li>
+                  <li>Via posta: LOCALITA&apos; BRAIOLE 46 - 43051 - ALBARETO (PR), Italia</li>
                   <li>Via email: coperativavalgotra54@gmail.com</li>
                   <li>Via telefono: +39 32803475</li>
                 </ul>

@@ -1,10 +1,4 @@
-// Questo è un file suggerito per lib/db.ts con le correzioni dei tipi 'any'
-
 import { createClient } from '@supabase/supabase-js';
-
-// Qui dovresti definire i tipi correttamente invece di usare 'any'
-// Per esempio:
-type DatabaseRecord = Record<string, unknown>;
 
 // Crea il client Supabase
 export const supabase = createClient(
@@ -84,121 +78,158 @@ export type Project = {
   created_at?: string;
 };
 
+// IMPORTANTE: Mantiene il nome della tabella 'calls' come nella versione vecchia
+// anziché 'call_bookings' della nuova versione
+
 // Funzione per ottenere le prenotazioni
 export async function getAllBookings(): Promise<CallBooking[]> {
-  const { data, error } = await supabase
-    .from('call_bookings')
-    .select('*')
-    .order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Errore nel recupero delle prenotazioni:', error);
-    throw error;
+  try {
+    const { data, error } = await supabase
+      .from('calls') // ATTENZIONE: Usa 'calls' come nella versione originale
+      .select('*')
+      .order('date', { ascending: true })
+      .order('time_slot', { ascending: true });
+    
+    if (error) {
+      console.error('Errore nel recupero delle prenotazioni:', error);
+      throw error;
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Errore dettagliato:', error);
+    return [];
   }
-  
-  return data || [];
 }
 
 // Aggiorna lo stato di una prenotazione
-export async function updateBookingStatus(id: string, status: string): Promise<void> {
-  const { error } = await supabase
-    .from('call_bookings')
-    .update({ status })
-    .eq('id', id);
-  
-  if (error) {
-    console.error('Errore nell\'aggiornamento dello stato della prenotazione:', error);
+export async function updateBookingStatus(id: string, status: string) {
+  try {
+    const { data, error } = await supabase
+      .from('calls') // ATTENZIONE: Usa 'calls' come nella versione originale
+      .update({ status })
+      .eq('id', id)
+      .select();
+    
+    if (error) {
+      console.error('Errore nell\'aggiornamento dello stato della prenotazione:', error);
+      throw error;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Errore nell\'aggiornamento dello stato:', error);
     throw error;
   }
 }
 
 // Prenotazione chiamata
-export async function saveCallBooking(booking: Omit<CallBooking, 'id' | 'created_at'>): Promise<void> {
-  const { error } = await supabase
-    .from('call_bookings')
-    .insert([
-      {
+export async function saveCallBooking(booking: Omit<CallBooking, 'id' | 'created_at'>) {
+  try {
+    const { data, error } = await supabase
+      .from('calls') // ATTENZIONE: Usa 'calls' come nella versione originale
+      .insert([{
         ...booking,
-        status: 'pending', // Default status
-        created_at: new Date().toISOString(),
-      }
-    ]);
-  
-  if (error) {
-    console.error('Errore nel salvataggio della prenotazione:', error);
+        status: booking.status || 'pending', // Default status
+      }])
+      .select();
+    
+    if (error) {
+      console.error('Errore Supabase:', error);
+      throw error;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Errore dettagliato:', error);
     throw error;
   }
 }
 
 // Ottieni slot orari occupati per una data
 export async function getBookedTimeSlots(date: string): Promise<string[]> {
-  const { data, error } = await supabase
-    .from('call_bookings')
-    .select('time_slot')
-    .eq('date', date)
-    .in('status', ['pending', 'confirmed']);
-  
-  if (error) {
-    console.error('Errore nel recupero degli slot orari occupati:', error);
-    throw error;
+  try {
+    const { data, error } = await supabase
+      .from('calls') // ATTENZIONE: Usa 'calls' come nella versione originale
+      .select('time_slot')
+      .eq('date', date)
+      .neq('status', 'cancelled');
+    
+    if (error) {
+      console.error('Errore nel recupero degli slot orari occupati:', error);
+      throw error;
+    }
+    
+    return data?.map(item => item.time_slot) || [];
+  } catch (error) {
+    console.error('Errore dettagliato:', error);
+    return [];
   }
-  
-  return data?.map(item => item.time_slot) || [];
 }
 
 // Messaggi di contatto
 export async function getAllContactMessages(): Promise<ContactMessage[]> {
-  const { data, error } = await supabase
-    .from('contact_messages')
-    .select('*')
-    .order('created_at', { ascending: false });
-  
-  if (error) {
+  try {
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Errore nel recupero dei messaggi:', error);
+      throw error;
+    }
+    
+    return data || [];
+  } catch (error) {
     console.error('Errore nel recupero dei messaggi:', error);
-    throw error;
+    return [];
   }
-  
-  return data || [];
 }
 
 // Salva un messaggio di contatto
-export async function saveContactMessage(message: Omit<ContactMessage, 'id' | 'created_at' | 'read' | 'archived'>): Promise<void> {
-  const { error } = await supabase
-    .from('contact_messages')
-    .insert([
-      {
-        ...message,
-        read: false,
-        archived: false,
-        created_at: new Date().toISOString(),
-      }
-    ]);
-  
-  if (error) {
+export async function saveContactMessage(message: ContactMessage) {
+  try {
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .insert([message])
+      .select();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
     console.error('Errore nel salvataggio del messaggio:', error);
     throw error;
   }
 }
 
-export async function markMessageAsRead(id: string, read: boolean): Promise<void> {
-  const { error } = await supabase
-    .from('contact_messages')
-    .update({ read })
-    .eq('id', id);
-  
-  if (error) {
-    console.error('Errore nell\'aggiornamento dello stato di lettura:', error);
+export async function markMessageAsRead(id: string, read: boolean = true) {
+  try {
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .update({ read })
+      .eq('id', id)
+      .select();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Errore nell\'aggiornamento del messaggio:', error);
     throw error;
   }
 }
 
-export async function archiveMessage(id: string, archived: boolean): Promise<void> {
-  const { error } = await supabase
-    .from('contact_messages')
-    .update({ archived })
-    .eq('id', id);
-  
-  if (error) {
+export async function archiveMessage(id: string, archived: boolean = true) {
+  try {
+    const { data, error } = await supabase
+      .from('contact_messages')
+      .update({ archived })
+      .eq('id', id)
+      .select();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
     console.error('Errore nell\'archiviazione del messaggio:', error);
     throw error;
   }
@@ -206,184 +237,190 @@ export async function archiveMessage(id: string, archived: boolean): Promise<voi
 
 // Prodotti
 export async function getAllProducts(): Promise<Product[]> {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: false });
-  
-  if (error) {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('name', { ascending: true });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
     console.error('Errore nel recupero dei prodotti:', error);
-    throw error;
+    return [];
   }
-  
-  return data || [];
 }
 
-export async function saveProduct(product: Omit<Product, 'id' | 'created_at'>): Promise<Product[]> {
-  const { data, error } = await supabase
-    .from('products')
-    .insert([
-      {
-        ...product,
-        created_at: new Date().toISOString(),
-      }
-    ])
-    .select();
-  
-  if (error) {
+export async function saveProduct(product: Product) {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .insert([product])
+      .select();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
     console.error('Errore nel salvataggio del prodotto:', error);
     throw error;
   }
-  
-  return data || [];
 }
 
-export async function updateProduct(id: string, product: Partial<Product>): Promise<void> {
-  const { error } = await supabase
-    .from('products')
-    .update(product)
-    .eq('id', id);
-  
-  if (error) {
+export async function updateProduct(id: string, product: Partial<Product>) {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .update(product)
+      .eq('id', id)
+      .select();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
     console.error('Errore nell\'aggiornamento del prodotto:', error);
     throw error;
   }
 }
 
-export async function deleteProduct(id: string): Promise<void> {
-  const { error } = await supabase
-    .from('products')
-    .delete()
-    .eq('id', id);
-  
-  if (error) {
-    console.error('Errore nella cancellazione del prodotto:', error);
+export async function deleteProduct(id: string) {
+  try {
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Errore nell\'eliminazione del prodotto:', error);
     throw error;
   }
 }
 
 // Ordini
 export async function getAllOrders(): Promise<Order[]> {
-  const { data, error } = await supabase
-    .from('orders')
-    .select('*')
-    .order('created_at', { ascending: false });
-  
-  if (error) {
+  try {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
     console.error('Errore nel recupero degli ordini:', error);
-    throw error;
-  }
-  
-  return data || [];
-}
-
-export async function saveOrder(order: Omit<Order, 'id'>): Promise<void> {
-  const { error } = await supabase
-    .from('orders')
-    .insert([order]);
-  
-  if (error) {
-    console.error('Errore nel salvataggio dell\'ordine:', error);
-    throw error;
+    return [];
   }
 }
 
-export async function updateOrderStatus(id: string, status: string): Promise<void> {
-  const { error } = await supabase
-    .from('orders')
-    .update({ status })
-    .eq('id', id);
-  
-  if (error) {
-    console.error('Errore nell\'aggiornamento dello stato dell\'ordine:', error);
+export async function saveOrder(order: Order) {
+  try {
+    console.log("Tentativo di salvare l'ordine:", order);
+    
+    // Aggiungere un controllo preliminare
+    if (!order || !order.customer || !order.items || order.items.length === 0) {
+      console.error("Dati dell'ordine non validi:", order);
+      throw new Error("Dati dell'ordine incompleti o non validi");
+    }
+    
+    const { data, error } = await supabase
+      .from('orders')
+      .insert([order])
+      .select();
+
+    if (error) {
+      console.error("Errore Supabase dettagliato:", JSON.stringify(error, null, 2));
+      throw error;
+    }
+    
+    console.log("Ordine salvato con successo:", data);
+    return data;
+  } catch (error: any) {
+    console.error("Errore completo nel salvataggio dell'ordine:", 
+      error.message || error.toString(), 
+      "Dettagli:", error.details || "Nessun dettaglio disponibile"
+    );
+    throw error;
+  }
+}
+
+export async function updateOrderStatus(
+  id: string, 
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+) {
+  try {
+    const { data, error } = await supabase
+      .from('orders')
+      .update({ status })
+      .eq('id', id)
+      .select();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Errore nell'aggiornamento dello stato dell'ordine:", error);
     throw error;
   }
 }
 
 // Progetti
 export async function getAllProjects(): Promise<Project[]> {
-  const { data, error } = await supabase
-    .from('projects')
-    .select('*')
-    .order('created_at', { ascending: false });
-  
-  if (error) {
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
     console.error('Errore nel recupero dei progetti:', error);
-    throw error;
+    return [];
   }
-  
-  return data || [];
 }
 
-export async function saveProject(project: Omit<Project, 'id' | 'created_at'>): Promise<Project[]> {
-  const { data, error } = await supabase
-    .from('projects')
-    .insert([
-      {
-        ...project,
-        created_at: new Date().toISOString(),
-      }
-    ])
-    .select();
-  
-  if (error) {
+export async function saveProject(project: Project) {
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .insert([project])
+      .select();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
     console.error('Errore nel salvataggio del progetto:', error);
     throw error;
   }
-  
-  return data || [];
 }
 
-export async function updateProject(id: string, project: Partial<Project>): Promise<void> {
-  const { error } = await supabase
-    .from('projects')
-    .update(project)
-    .eq('id', id);
-  
-  if (error) {
+export async function updateProject(id: string, project: Partial<Project>) {
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .update(project)
+      .eq('id', id)
+      .select();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
     console.error('Errore nell\'aggiornamento del progetto:', error);
     throw error;
   }
 }
 
-export async function deleteProject(id: string): Promise<void> {
-  const { error } = await supabase
-    .from('projects')
-    .delete()
-    .eq('id', id);
-  
-  if (error) {
-    console.error('Errore nella cancellazione del progetto:', error);
-    throw error;
-  }
-}
-
-// Funzioni per l'autenticazione
-export async function loginAdmin(username: string, password: string): Promise<DatabaseRecord | null> {
+export async function deleteProject(id: string) {
   try {
-    // In un'app reale, la verifica della password dovrebbe essere gestita sul server
-    // Questa è solo una simulazione per demo
-    const { data, error } = await supabase
-      .from('admin_users')
-      .select('*')
-      .eq('username', username)
-      .eq('active', true)
-      .single();
+    const { error } = await supabase
+      .from('projects')
+      .delete()
+      .eq('id', id);
     
-    if (error || !data) {
-      return null;
-    }
-    
-    // In una vera app, dovresti verificare la password con bcrypt o simili
-    const passwordMatches = password === data.password; // Semplificato per demo
-    
-    if (passwordMatches) {
-      return data;
-    }
-    
-    return null;
+    if (error) throw error;
+    return true;
   } catch (error) {
-    console.error('Errore durante il login:', error);
-    return null;
+    console.error('Errore nell\'eliminazione del progetto:', error);
+    throw error;
   }
 }

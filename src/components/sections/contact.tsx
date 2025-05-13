@@ -125,7 +125,7 @@ export default function Contact() {
                 </Button>
                 
                 <Button asChild variant="outline">
-                  <Link href="/">Torna alla homepage</a>
+                  <Link href="/">Torna alla homepage</Link>
                 </Button>
               </div>
             </Card>
@@ -252,7 +252,7 @@ export default function Contact() {
                   disabled={isSubmitting}
                 />
                 <Label htmlFor="privacy" className="text-sm">
-                  Ho letto e accetto la <Link href="/privacy" className="text-green-700 hover:underline">Privacy Policy</a>
+                  Ho letto e accetto la <Link href="/privacy" className="text-green-700 hover:underline">Privacy Policy</Link>
                 </Label>
               </div>
               

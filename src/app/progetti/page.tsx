@@ -1,5 +1,5 @@
 "use client"
-
+import Image from "next/image";
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -112,7 +112,7 @@ export default function ProgettiPage() {
                         <div className="grid md:grid-cols-2 h-full">
                           <div className="h-64 md:h-96 bg-gray-200 relative overflow-hidden">
                             {project.image_url ? (
-                              <img 
+                              <Image 
                                 src={project.image_url} 
                                 alt={project.title}
                                 className="w-full h-full object-cover"
@@ -273,7 +273,7 @@ export default function ProgettiPage() {
                 <Card key={project.id} className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all">
                   <div className="h-56 relative overflow-hidden">
                     {project.image_url ? (
-                      <img 
+                      <Image 
                         src={project.image_url} 
                         alt={project.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

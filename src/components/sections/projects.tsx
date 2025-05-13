@@ -1,5 +1,5 @@
 "use client"
-
+import Image from "next/image";
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -71,7 +71,7 @@ export default function Projects() {
                 {/* Immagine del progetto */}
                 <div className="h-64 relative overflow-hidden">
                   {project.image_url ? (
-                    <img 
+                    <Image
                       src={project.image_url} 
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"

@@ -1,5 +1,5 @@
 "use client"
-
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -366,7 +366,7 @@ export default function NegozioPage() {
                 <Card key={product.id} className="border-0 shadow-md hover:shadow-lg transition-shadow flex flex-col">
                   <div className="relative aspect-video overflow-hidden bg-gray-100">
                     {product.image_url ? (
-                      <img
+                      <Image
                         src={product.image_url}
                         alt={product.name}
                         className="object-cover w-full h-full"
@@ -461,7 +461,7 @@ export default function NegozioPage() {
                     <div className="flex items-center gap-3">
                       <div className="h-12 w-12 bg-gray-100 rounded-md overflow-hidden">
                         {item.product.image_url ? (
-                          <img
+                          <Image
                             src={item.product.image_url}
                             alt={item.product.name}
                             className="h-full w-full object-cover"

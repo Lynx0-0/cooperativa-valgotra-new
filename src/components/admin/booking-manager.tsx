@@ -68,25 +68,6 @@ export default function BookingManager() {
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
   
-  // Carica le prenotazioni
-  const fetchBookings = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      const data = await getAllBookings()
-      setBookings(data)
-      filterBookings(data, statusFilter)
-    } catch (error) {
-      console.error("Errore nel caricamento delle prenotazioni:", error)
-      toast.error("Impossibile caricare le prenotazioni")
-    } finally {
-      setIsLoading(false)
-    }
-  }, [statusFilter])
-  
-  useEffect(() => {
-    fetchBookings()
-  }, [fetchBookings])
-  
   // Filtra le prenotazioni
   const filterBookings = useCallback(
     (
@@ -118,6 +99,25 @@ export default function BookingManager() {
     },
     [sortDirection]
   )
+  
+  // Carica le prenotazioni
+  const fetchBookings = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      const data = await getAllBookings()
+      setBookings(data)
+      filterBookings(data, statusFilter)
+    } catch (error) {
+      console.error("Errore nel caricamento delle prenotazioni:", error)
+      toast.error("Impossibile caricare le prenotazioni")
+    } finally {
+      setIsLoading(false)
+    }
+  }, [statusFilter, filterBookings])
+  
+  useEffect(() => {
+    fetchBookings()
+  }, [fetchBookings])
   
   useEffect(() => {
     filterBookings(bookings, statusFilter)

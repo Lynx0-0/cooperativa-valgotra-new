@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { toast } from "sonner"
-import { format, isToday, isAfter, parseISO, isSameDay } from "date-fns"
+import { format, isToday, isAfter, parseISO } from "date-fns"
 import { it } from "date-fns/locale"
 import {
   Calendar as CalendarIcon,

@@ -30,7 +30,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
-import { ShoppingCart, Search, Tag, Package2, Plus, Minus, X, Phone, Mail, User } from "lucide-react"
+import { ShoppingCart, Search, Tag, Package2, Plus, Minus, X } from "lucide-react"
 import { getAllProducts, Product, saveOrder, OrderItem } from "@/lib/db"
 import { Label } from "@radix-ui/react-label"
 

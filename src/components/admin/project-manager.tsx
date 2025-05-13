@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"

@@ -18,7 +18,7 @@ import {
 import { toast } from "sonner" // Importa toast da sonner invece che da shadcn/ui
 import { Loader2 } from "lucide-react"
 import { saveCallBooking, getBookedTimeSlots } from "@/lib/db"
-import { format, isToday, addDays, isBefore } from "date-fns"
+import { format, isBefore } from "date-fns"
 import { it } from "date-fns/locale"
 
 // Fasce orarie disponibili

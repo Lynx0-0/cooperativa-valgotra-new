@@ -152,9 +152,9 @@ export default function ServiziPage() {
                     </CardContent>
                     
                     <CardFooter className="justify-center pb-8">
-                      <Button asChild className="bg-green-700 hover:bg-green-800">
+                      {/*<Button asChild className="bg-green-700 hover:bg-green-800">
                         <Link href={`/servizi/${service.id}`}>Maggiori Dettagli</Link>
-                      </Button>
+                      </Button>*/}
                     </CardFooter>
                   </Card>
                 );

@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -83,7 +83,7 @@ export default function ProjectManager() {
   })
   
   // Carica i progetti
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     try {
       setIsLoading(true)
       const data = await getAllProjects()
@@ -94,11 +94,11 @@ export default function ProjectManager() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
   
   useEffect(() => {
     fetchProjects()
-  }, [])
+  }, [fetchProjects])
   
   // Filtra i progetti
   const filteredProjects = projects.filter(project => {
@@ -496,7 +496,7 @@ export default function ProjectManager() {
           <DialogHeader>
             <DialogTitle>Conferma Eliminazione</DialogTitle>
             <DialogDescription>
-              Sei sicuro di voler eliminare il progetto "{projectToDelete?.title}"? Questa azione non può essere annullata.
+              Sei sicuro di voler eliminare il progetto &quot;{projectToDelete?.title}&quot;? Questa azione non può essere annullata.
             </DialogDescription>
           </DialogHeader>
           

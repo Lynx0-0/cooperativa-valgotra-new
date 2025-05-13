@@ -71,6 +71,7 @@ export type Project = {
   title: string;
   description: string;
   image_url?: string;
+  gallery_images?: string[]; // Aggiungi questo campo
   client?: string;
   category?: string;
   completion_date?: string;

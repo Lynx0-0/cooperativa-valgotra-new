@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { useState, useEffect } from "react"
-import { useParams, notFound } from "next/navigation"
+import { useParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -13,7 +13,10 @@ import {
   ArrowLeft,
   MapPin,
   FileText,
-  Users
+  Users,
+  ChevronLeft,
+  ChevronRight,
+  X
 } from "lucide-react"
 import { format, parseISO } from "date-fns"
 import { it } from "date-fns/locale"
@@ -24,6 +27,9 @@ export default function ProgettoDettaglioPage() {
   const [project, setProject] = useState<Project | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -58,6 +64,26 @@ export default function ProgettoDettaglioPage() {
     } catch {
       return null
     }
+  }
+  
+  // Funzioni per il carosello
+  const nextSlide = () => {
+    if (!project?.gallery_images?.length) return
+    setCurrentSlide(prev => 
+      prev === project.gallery_images!.length - 1 ? 0 : prev + 1
+    )
+  }
+  
+  const prevSlide = () => {
+    if (!project?.gallery_images?.length) return
+    setCurrentSlide(prev => 
+      prev === 0 ? project.gallery_images!.length - 1 : prev - 1
+    )
+  }
+  
+  const openLightbox = (imageUrl: string) => {
+    setLightboxImage(imageUrl)
+    setLightboxOpen(true)
   }
   
   // Se il progetto non è stato trovato
@@ -130,7 +156,7 @@ export default function ProgettoDettaglioPage() {
       <section className="py-12">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Immagine e info di base */}
+            {/* Immagine principale e info di base */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
                 <div className="relative h-[300px] md:h-[400px] lg:h-[500px] w-full">
@@ -138,11 +164,12 @@ export default function ProgettoDettaglioPage() {
                     <Image 
                       src={project.image_url} 
                       alt={project.title} 
-                      className="object-cover" 
+                      className="object-cover cursor-pointer" 
                       fill 
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
                       priority
                       unoptimized={true}
+                      onClick={() => project.image_url && openLightbox(project.image_url)}
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -163,15 +190,65 @@ export default function ProgettoDettaglioPage() {
                 </div>
               </div>
               
-              {/* Galleria immagini aggiuntive - Esempio */}
-              {/* Nella realtà, dovresti avere un campo nella tua tabella projects per le immagini aggiuntive */}
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden p-6 md:p-8">
-                <h2 className="text-2xl font-bold mb-6">Galleria Immagini</h2>
-                <p className="text-gray-500 text-center py-8">
-                  Questa è un'area di esempio per mostrare immagini aggiuntive del progetto.
-                  Per implementarla, dovrai aggiungere un campo per le immagini multiple nel database.
-                </p>
-              </div>
+              {/* Galleria immagini - Carosello */}
+              {project?.gallery_images && project.gallery_images.length > 0 && (
+                <div className="bg-white rounded-lg shadow-lg overflow-hidden p-6 md:p-8">
+                  <h2 className="text-2xl font-bold mb-6">Galleria Immagini</h2>
+                  
+                  <div className="relative">
+                    <div className="relative h-[300px] md:h-[400px] overflow-hidden rounded-lg">
+                      <Image 
+                        src={project.gallery_images[currentSlide]} 
+                        alt={`Immagine ${currentSlide + 1} del progetto`} 
+                        className="object-contain cursor-pointer" 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
+                        unoptimized={true}
+                        onClick={() => openLightbox(project.gallery_images![currentSlide])}
+                      />
+                    </div>
+                    
+                    {/* Controlli carosello */}
+                    {project.gallery_images.length > 1 && (
+                      <>
+                        <button
+                          onClick={prevSlide}
+                          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md z-10"
+                        >
+                          <ChevronLeft size={24} />
+                        </button>
+                        <button
+                          onClick={nextSlide}
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md z-10"
+                        >
+                          <ChevronRight size={24} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  
+                  {/* Miniature */}
+                  <div className="flex overflow-x-auto gap-2 mt-4 pb-2">
+                    {project.gallery_images.map((imageUrl, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`relative flex-shrink-0 h-16 w-16 md:h-20 md:w-20 rounded-md overflow-hidden cursor-pointer 
+                          ${idx === currentSlide ? 'ring-2 ring-green-700' : ''}`}
+                        onClick={() => setCurrentSlide(idx)}
+                      >
+                        <Image 
+                          src={imageUrl} 
+                          alt={`Miniatura ${idx + 1}`} 
+                          className="object-cover" 
+                          fill 
+                          sizes="80px"
+                          unoptimized={true}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             
             {/* Sidebar con dettagli */}
@@ -263,6 +340,34 @@ export default function ProgettoDettaglioPage() {
         </div>
       </section>
       
+      {/* Lightbox */}
+      {lightboxOpen && lightboxImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={() => setLightboxOpen(false)}
+        >
+          <div className="relative max-w-5xl max-h-[90vh] w-full h-full">
+            <Image 
+              src={lightboxImage} 
+              alt="Immagine a schermo intero" 
+              className="object-contain" 
+              fill
+              sizes="100vw"
+              unoptimized={true}
+            />
+            <button 
+              className="absolute top-4 right-4 bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxOpen(false);
+              }}
+            >
+              <X size={24} />
+            </button>
+          </div>
+        </div>
+      )}
+      
       {/* Navigazione progetti correlati */}
       <section className="py-12 bg-gray-50">
         <div className="container">
@@ -274,7 +379,7 @@ export default function ProgettoDettaglioPage() {
               Implementala aggiungendo la logica per recuperare progetti della stessa categoria.
             </p>
             
-            <Button asChild className="mt-6">
+            <Button asChild className="mt-6 bg-green-700 hover:bg-green-800">
               <Link href="/progetti">
                 Esplora tutti i progetti
               </Link>

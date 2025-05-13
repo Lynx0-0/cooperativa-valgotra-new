@@ -157,10 +157,10 @@ export default function ProgettiPage() {
                             
                             <div className="mt-auto">
                               <Button asChild className="bg-green-700 hover:bg-green-800">
-                                <Link href={`/progetti/${project.id}`}>
-                                  Maggiori Dettagli
-                                  <ArrowRight size={16} className="ml-2" />
-                                </Link>
+<Link href={`/progetti/${project.id}`}>
+  Maggiori Dettagli
+  <ArrowRight size={16} className="ml-2" />
+</Link>
                               </Button>
                             </div>
                           </div>

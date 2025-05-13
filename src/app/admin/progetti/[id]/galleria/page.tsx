@@ -22,7 +22,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
-import { ImagePlus, X, Save, ArrowLeft, Trash2, CheckCircle } from "lucide-react"
+import { ImagePlus, Save, ArrowLeft, Trash2, CheckCircle } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import { Project, getAllProjects } from "@/lib/db"
 
@@ -44,15 +44,15 @@ export default function EditProjectGalleryPage() {
   useEffect(() => {
     const getTableInfo = async () => {
       try {
-        const { data, error } = await supabase
+        const { error: projectsError } = await supabase
           .from('projects')
           .select('id')
           .limit(1);
         
-        if (error) {
-          console.error("Errore nell'accesso alla tabella 'projects':", error);
+        if (projectsError) {
+          console.error("Errore nell'accesso alla tabella 'projects':", projectsError);
           // Prova un nome alternativo
-          const { data: altData, error: altError } = await supabase
+          const { error: altError } = await supabase
             .from('progetti')
             .select('id')
             .limit(1);
@@ -155,7 +155,7 @@ export default function EditProjectGalleryPage() {
   
   // Torna alla lista progetti
   const goBackToProjects = () => {
-    router.push("/admin/dashboard")
+    router.push("/admin/progetti")
   }
   
   // Salva le modifiche al progetto - NUOVA IMPLEMENTAZIONE DIRETTA CON SUPABASE
@@ -185,18 +185,16 @@ export default function EditProjectGalleryPage() {
       console.log(`Usando tabella: ${tableToUse}`);
       
       // Aggiornamento diretto tramite Supabase client
-      const { data, error } = await supabase
+      const { error: updateError } = await supabase
         .from(tableToUse)
         .update({ gallery_images: galleryImages })
         .eq('id', projectId)
         .select();
       
-      if (error) {
-        console.error("Errore Supabase:", error);
-        throw new Error(error.message || 'Errore Supabase');
+      if (updateError) {
+        console.error("Errore Supabase:", updateError);
+        throw new Error(updateError.message || 'Errore Supabase');
       }
-      
-      console.log("Update result:", data);
       
       // Mostra un messaggio di successo senza reindirizzamento automatico
       toast.success("Galleria salvata con successo");
@@ -316,7 +314,7 @@ export default function EditProjectGalleryPage() {
             <div className="text-center py-12 border border-dashed rounded-lg">
               <ImagePlus className="mx-auto h-12 w-12 text-gray-300" />
               <p className="mt-2 text-gray-500">Nessuna immagine nella galleria</p>
-              <p className="text-sm text-gray-400">Clicca su "Aggiungi Immagine" per iniziare</p>
+              <p className="text-sm text-gray-400">Clicca su &quot;Aggiungi Immagine&quot; per iniziare</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -370,12 +368,12 @@ export default function EditProjectGalleryPage() {
         <DialogContent>
           <DialogTitle>Aggiungi Immagine alla Galleria</DialogTitle>
           <DialogDescription>
-            Inserisci l'URL dell'immagine che vuoi aggiungere alla galleria del progetto.
+            Inserisci l&apos;URL dell&apos;immagine che vuoi aggiungere alla galleria del progetto.
           </DialogDescription>
           
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">URL dell'immagine</Label>
+              <Label htmlFor="imageUrl">URL dell&apos;immagine</Label>
               <Input
                 id="imageUrl"
                 placeholder="https://esempio.com/immagine.jpg"

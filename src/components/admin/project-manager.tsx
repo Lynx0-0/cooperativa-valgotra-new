@@ -512,7 +512,7 @@ export default function ProjectManager() {
             {editProject && (
               <div className="pt-2">
                 <p className="text-sm text-gray-500 mb-2">
-                  Per gestire le immagini della galleria, salva prima le modifiche e poi usa il pulsante "Galleria" dalla lista progetti.
+                  Per gestire le immagini della galleria, salva prima le modifiche e poi usa il pulsante &quot;Galleria&quot; dalla lista progetti.
                 </p>
               </div>
             )}

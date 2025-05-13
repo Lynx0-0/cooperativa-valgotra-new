@@ -21,6 +21,7 @@ import {
 import { format, parseISO } from "date-fns"
 import { it } from "date-fns/locale"
 import { Project, getAllProjects } from "@/lib/db"
+import Projects from "@/components/sections/projects" // Importo il componente Projects
 
 export default function ProgettoDettaglioPage() {
   const { id } = useParams()
@@ -30,6 +31,7 @@ export default function ProgettoDettaglioPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxImage, setLightboxImage] = useState<string | null>(null)
+  const [relatedCategory, setRelatedCategory] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -40,6 +42,10 @@ export default function ProgettoDettaglioPage() {
         
         if (foundProject) {
           setProject(foundProject)
+          // Memorizza la categoria per i progetti correlati
+          if (foundProject.category) {
+            setRelatedCategory(foundProject.category)
+          }
         } else {
           setNotFound(true)
         }
@@ -302,7 +308,7 @@ export default function ProgettoDettaglioPage() {
                       <h3 className="font-semibold text-gray-700">Località</h3>
                       <p className="text-gray-600">Provincia di Lecco</p>
                       <p className="text-xs text-gray-500 mt-1">
-                        (Campo di esempio - aggiungi 'location' alla tabella projects per utilizzarlo)
+                        (Campo di esempio - aggiungi &apos;location&apos; alla tabella projects per utilizzarlo)
                       </p>
                     </div>
                   </div>
@@ -315,7 +321,7 @@ export default function ProgettoDettaglioPage() {
                       <h3 className="font-semibold text-gray-700">Team</h3>
                       <p className="text-gray-600">5 membri del team coinvolti</p>
                       <p className="text-xs text-gray-500 mt-1">
-                        (Campo di esempio - aggiungi 'team_size' alla tabella projects per utilizzarlo)
+                        (Campo di esempio - aggiungi &apos;team_size&apos; alla tabella projects per utilizzarlo)
                       </p>
                     </div>
                   </div>
@@ -368,23 +374,14 @@ export default function ProgettoDettaglioPage() {
         </div>
       )}
       
-      {/* Navigazione progetti correlati */}
+      {/* Sezione Progetti Correlati usando il componente Projects */}
       <section className="py-12 bg-gray-50">
         <div className="container">
-          <h2 className="text-2xl font-bold mb-8 text-center">Progetti Correlati</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">Progetti Correlati</h2>
+          <div className="h-1 w-16 bg-yellow-400 mx-auto mb-10"></div>
           
-          <div className="text-center py-8">
-            <p className="text-gray-500">
-              Questa è un'area di esempio per mostrare progetti correlati.
-              Implementala aggiungendo la logica per recuperare progetti della stessa categoria.
-            </p>
-            
-            <Button asChild className="mt-6 bg-green-700 hover:bg-green-800">
-              <Link href="/progetti">
-                Esplora tutti i progetti
-              </Link>
-            </Button>
-          </div>
+          {/* Utilizzo il componente Projects per mostrare progetti correlati */}
+          <Projects filterCategory={relatedCategory} excludeProjectId={project?.id || ""} />
         </div>
       </section>
     </>

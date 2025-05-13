@@ -335,11 +335,8 @@ export async function saveOrder(order: Order) {
     
     console.log("Ordine salvato con successo:", data);
     return data;
-  } catch (error: any) {
-    console.error("Errore completo nel salvataggio dell'ordine:", 
-      error.message || error.toString(), 
-      "Dettagli:", error.details || "Nessun dettaglio disponibile"
-    );
+  } catch (error: unknown) { // Usiamo unknown anziché any per rispettare i tipi stretti
+    console.error("Errore completo nel salvataggio dell'ordine:", error);
     throw error;
   }
 }

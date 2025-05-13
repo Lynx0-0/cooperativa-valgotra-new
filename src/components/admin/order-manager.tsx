@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -68,8 +68,17 @@ export default function OrderManager() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [statusFilter, setStatusFilter] = useState<string>("all")
   
+  // Filtra gli ordini in base allo stato
+  const filterOrders = useCallback((orderList: Order[], status: string) => {
+    if (status === "all") {
+      setFilteredOrders(orderList)
+    } else {
+      setFilteredOrders(orderList.filter(order => order.status === status))
+    }
+  }, [])
+  
   // Carica tutti gli ordini
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       setIsLoading(true)
       const data = await getAllOrders()
@@ -81,31 +90,22 @@ export default function OrderManager() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [statusFilter, filterOrders])
   
   useEffect(() => {
     fetchOrders()
-  }, [])
-  
-  // Filtra gli ordini in base allo stato
-  const filterOrders = (orderList: Order[], status: string) => {
-    if (status === "all") {
-      setFilteredOrders(orderList)
-    } else {
-      setFilteredOrders(orderList.filter(order => order.status === status))
-    }
-  }
+  }, [fetchOrders])
   
   useEffect(() => {
     filterOrders(orders, statusFilter)
-  }, [orders, statusFilter])
+  }, [orders, statusFilter, filterOrders])
   
   // Formatta la data
   const formatDate = (dateString: string) => {
     try {
       const date = parseISO(dateString)
       return format(date, "dd MMMM yyyy, HH:mm", { locale: it })
-    } catch (Errore) {
+    } catch (error) { // Corretto da 'Errore' a 'error'
       return dateString
     }
   }

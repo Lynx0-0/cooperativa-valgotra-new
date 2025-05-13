@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
-import { MapPin, Phone, Mail, CheckCircle2, SendIcon } from "lucide-react"
+import { MapPin, Phone, Mail, CheckCircle2, SendIcon, Link } from "lucide-react"
 import { toast } from "sonner"
 import { saveContactMessage } from "@/lib/db"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -125,7 +125,7 @@ export default function Contact() {
                 </Button>
                 
                 <Button asChild variant="outline">
-                  <a href="/">Torna alla homepage</a>
+                  <Link href="/">Torna alla homepage</a>
                 </Button>
               </div>
             </Card>
@@ -252,7 +252,7 @@ export default function Contact() {
                   disabled={isSubmitting}
                 />
                 <Label htmlFor="privacy" className="text-sm">
-                  Ho letto e accetto la <a href="/privacy" className="text-green-700 hover:underline">Privacy Policy</a>
+                  Ho letto e accetto la <Link href="/privacy" className="text-green-700 hover:underline">Privacy Policy</a>
                 </Label>
               </div>
               

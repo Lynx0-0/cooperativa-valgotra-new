@@ -107,7 +107,7 @@ export default function ProgettiPage() {
                   style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
                   <div className="flex">
-                    {featuredProjects.map((project, index) => (
+                    {featuredProjects.map((project) => (
                       <div key={project.id} className="min-w-full">
                         <div className="grid md:grid-cols-2 h-full">
                           <div className="h-64 md:h-96 bg-gray-200 relative overflow-hidden">

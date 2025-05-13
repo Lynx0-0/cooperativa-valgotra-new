@@ -105,7 +105,7 @@ export default function OrderManager() {
     try {
       const date = parseISO(dateString)
       return format(date, "dd MMMM yyyy, HH:mm", { locale: it })
-    } catch (error) {
+    } catch (Errore) {
       return dateString
     }
   }

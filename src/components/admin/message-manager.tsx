@@ -24,9 +24,7 @@ import {
   Search,
   Mail,
   MailOpen,
-  Trash2,
   RefreshCw,
-  CheckCircle2,
   X
 } from "lucide-react"
 import {

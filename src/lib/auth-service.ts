@@ -46,7 +46,7 @@ export async function loginAdmin(username: string, password: string): Promise<Ad
       .eq('id', data.id);
     
     // 4. Ritorna i dati dell'utente senza la password
-    const { password_hash, ...userWithoutPassword } = data;
+    const {...userWithoutPassword } = data;
     return userWithoutPassword as AdminUser;
   } catch (error) {
     console.error('Errore nel login admin:', error);

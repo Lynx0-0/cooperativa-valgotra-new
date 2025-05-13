@@ -40,8 +40,7 @@ import {
   Pencil, 
   X, 
   ShoppingBag,
-  ImageIcon,
-  Check
+  ImageIcon
 } from "lucide-react"
 import { 
   getAllProducts, 
@@ -506,7 +505,7 @@ export default function ProductManager() {
           <DialogHeader>
             <DialogTitle>Conferma Eliminazione</DialogTitle>
             <DialogDescription>
-              Sei sicuro di voler eliminare il prodotto "{productToDelete?.name}"? Questa azione non può essere annullata.
+              Sei sicuro di voler eliminare il prodotto &quot;{productToDelete?.name}&quot;? Questa azione non può essere annullata.
             </DialogDescription>
           </DialogHeader>
           

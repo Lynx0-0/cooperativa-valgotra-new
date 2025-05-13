@@ -9,11 +9,9 @@ import {
   Shrub,
   Fence,
   Shovel,
-  Construction,
   Camera,
   Cpu,
-  SprayCan,
-  Laptop
+  SprayCan
 } from "lucide-react"
 
 // Dati dei servizi aggiornati con le categorie e icone

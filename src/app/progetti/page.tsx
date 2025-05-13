@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { 
   Calendar, 
   ChevronLeft, 
@@ -23,6 +23,7 @@ export default function ProgettiPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState("")
   
   // Caricamento dei progetti
   useEffect(() => {
@@ -116,6 +117,9 @@ export default function ProgettiPage() {
                                 src={project.image_url} 
                                 alt={project.title}
                                 className="w-full h-full object-cover"
+                                width={800}
+                                height={600}
+                                unoptimized={true}
                               />
                             ) : (
                               <div className="flex items-center justify-center h-full">
@@ -270,13 +274,16 @@ export default function ProgettiPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project) => (
-                <Card key={project.id} className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all">
+                <div key={project.id} className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all">
                   <div className="h-56 relative overflow-hidden">
                     {project.image_url ? (
                       <Image 
                         src={project.image_url} 
                         alt={project.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        width={500}
+                        height={300}
+                        unoptimized={true}
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full bg-gray-200">
@@ -297,7 +304,7 @@ export default function ProgettiPage() {
                     )}
                   </div>
                   
-                  <CardContent className="p-6">
+                  <div className="p-6 bg-white">
                     <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                     
                     <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
@@ -319,16 +326,14 @@ export default function ProgettiPage() {
                     <p className="text-gray-600 line-clamp-3">
                       {project.description}
                     </p>
-                  </CardContent>
-                  
-                  <CardFooter className="pt-0 pb-6 px-6">
-                    <Button asChild variant="outline" className="w-full mt-2">
+                    
+                    <Button asChild variant="outline" className="w-full mt-4">
                       <Link href={`/progetti/${project.id}`}>
                         Scopri di più
                       </Link>
                     </Button>
-                  </CardFooter>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           )}

@@ -75,27 +75,27 @@ export default function NegozioPage() {
   
   // Carica tutti i prodotti
   const fetchProducts = useCallback(async () => {
-  try {
-    setIsLoading(true);
-    const data = await getAllProducts();
-    // Filtra solo i prodotti in stock per il display pubblico
-    const availableProducts = data.filter(product => product.in_stock);
-    setProducts(availableProducts);
-    filterProducts(availableProducts, categoryFilter, searchTerm);
-  } catch (error) {
-    console.error("Errore nel caricamento dei prodotti:", error);
-    toast.error("Impossibile caricare i prodotti. Riprova più tardi.");
-  } finally {
-    setIsLoading(false);
-  }
-}, [categoryFilter, searchTerm]);
+    try {
+      setIsLoading(true);
+      const data = await getAllProducts();
+      // Filtra solo i prodotti in stock per il display pubblico
+      const availableProducts = data.filter(product => product.in_stock);
+      setProducts(availableProducts);
+      filterProducts(availableProducts, categoryFilter, searchTerm);
+    } catch (error) {
+      console.error("Errore nel caricamento dei prodotti:", error);
+      toast.error("Impossibile caricare i prodotti. Riprova più tardi.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [categoryFilter, searchTerm]);
   
   useEffect(() => {
-  fetchProducts();
-}, [fetchProducts]);
+    fetchProducts();
+  }, [fetchProducts]);
   
   // Filtra i prodotti in base a categoria e termine di ricerca
-  const filterProducts = (
+  const filterProducts = useCallback((
     productList: Product[],
     category: string,
     search: string
@@ -118,12 +118,12 @@ export default function NegozioPage() {
     }
     
     setFilteredProducts(filtered)
-  }
+  }, []);
   
   // Aggiorna i filtri quando cambiano i valori
   useEffect(() => {
     filterProducts(products, categoryFilter, searchTerm)
-  }, [products, categoryFilter, searchTerm])
+  }, [products, categoryFilter, searchTerm, filterProducts])
   
   // Formatta il prezzo in euro
   const formatPrice = (price: number) => {
@@ -370,6 +370,9 @@ export default function NegozioPage() {
                         src={product.image_url}
                         alt={product.name}
                         className="object-cover w-full h-full"
+                        width={400}
+                        height={300}
+                        unoptimized={true}
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center text-gray-300">
@@ -465,6 +468,9 @@ export default function NegozioPage() {
                             src={item.product.image_url}
                             alt={item.product.name}
                             className="h-full w-full object-cover"
+                            width={48}
+                            height={48}
+                            unoptimized={true}
                           />
                         ) : (
                           <div className="h-full w-full flex items-center justify-center text-gray-400">

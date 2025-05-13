@@ -71,6 +71,7 @@ export default function Projects() {
                 {/* Immagine del progetto */}
                 <div className="h-64 relative overflow-hidden">
                   {project.image_url ? (
+                    // Soluzione con unoptimized=true per evitare problemi di ottimizzazione
                     <Image
                       src={project.image_url} 
                       alt={project.title}

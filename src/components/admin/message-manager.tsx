@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -44,8 +44,34 @@ export default function MessageManager() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   
+  // Filtra i messaggi in base alla modalità di visualizzazione e al termine di ricerca
+  const filterMessages = useCallback(
+    (
+      messageList: ContactMessage[], 
+      mode: "inbox" | "archived", 
+      term: string
+    ) => {
+      let filtered = messageList.filter(message => 
+        mode === "inbox" ? !message.archived : message.archived
+      )
+      
+      if (term) {
+        const termLower = term.toLowerCase()
+        filtered = filtered.filter(message =>
+          message.name.toLowerCase().includes(termLower) ||
+          message.email.toLowerCase().includes(termLower) ||
+          (message.subject && message.subject.toLowerCase().includes(termLower)) ||
+          message.message.toLowerCase().includes(termLower)
+        )
+      }
+      
+      setFilteredMessages(filtered)
+    },
+    []
+  )
+  
   // Carica i messaggi
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     try {
       setIsLoading(true)
       const data = await getAllContactMessages()
@@ -57,38 +83,15 @@ export default function MessageManager() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [viewMode, searchTerm, filterMessages])
   
   useEffect(() => {
     fetchMessages()
-  }, [])
-  
-  // Filtra i messaggi in base alla modalità di visualizzazione e al termine di ricerca
-  const filterMessages = (
-    messageList: ContactMessage[], 
-    mode: "inbox" | "archived", 
-    term: string
-  ) => {
-    let filtered = messageList.filter(message => 
-      mode === "inbox" ? !message.archived : message.archived
-    )
-    
-    if (term) {
-      const termLower = term.toLowerCase()
-      filtered = filtered.filter(message =>
-        message.name.toLowerCase().includes(termLower) ||
-        message.email.toLowerCase().includes(termLower) ||
-        (message.subject && message.subject.toLowerCase().includes(termLower)) ||
-        message.message.toLowerCase().includes(termLower)
-      )
-    }
-    
-    setFilteredMessages(filtered)
-  }
+  }, [fetchMessages])
   
   useEffect(() => {
     filterMessages(messages, viewMode, searchTerm)
-  }, [messages, viewMode, searchTerm])
+  }, [messages, viewMode, searchTerm, filterMessages])
   
   // Marca un messaggio come letto/non letto
   const handleToggleRead = async (id: string, currentRead: boolean = false) => {
@@ -318,7 +321,9 @@ export default function MessageManager() {
                     checked={selectedIds.includes(message.id!)}
                     onCheckedChange={(checked) => {
                       // Previene l'apertura del messaggio quando si clicca sulla checkbox
-                      message.id && handleSelectMessage(message.id, checked as boolean)
+                      if (message.id) {
+                        handleSelectMessage(message.id, checked as boolean);
+                      }
                     }}
                     onClick={(e) => e.stopPropagation()}
                   />

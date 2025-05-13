@@ -74,25 +74,25 @@ export default function NegozioPage() {
   const topRef = useRef<HTMLDivElement>(null)
   
   // Carica tutti i prodotti
-  const fetchProducts = async () => {
-    try {
-      setIsLoading(true)
-      const data = await getAllProducts()
-      // Filtra solo i prodotti in stock per il display pubblico
-      const availableProducts = data.filter(product => product.in_stock)
-      setProducts(availableProducts)
-      filterProducts(availableProducts, categoryFilter, searchTerm)
-    } catch (error) {
-      console.error("Errore nel caricamento dei prodotti:", error)
-      toast.error("Impossibile caricare i prodotti. Riprova più tardi.")
-    } finally {
-      setIsLoading(false)
-    }
+  const fetchProducts = useCallback(async () => {
+  try {
+    setIsLoading(true);
+    const data = await getAllProducts();
+    // Filtra solo i prodotti in stock per il display pubblico
+    const availableProducts = data.filter(product => product.in_stock);
+    setProducts(availableProducts);
+    filterProducts(availableProducts, categoryFilter, searchTerm);
+  } catch (error) {
+    console.error("Errore nel caricamento dei prodotti:", error);
+    toast.error("Impossibile caricare i prodotti. Riprova più tardi.");
+  } finally {
+    setIsLoading(false);
   }
+}, [categoryFilter, searchTerm]);
   
   useEffect(() => {
-    fetchProducts()
-  }, [])
+  fetchProducts();
+}, [fetchProducts]);
   
   // Filtra i prodotti in base a categoria e termine di ricerca
   const filterProducts = (

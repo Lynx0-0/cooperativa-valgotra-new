@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -69,7 +69,7 @@ export default function BookingManager() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
   
   // Carica le prenotazioni
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     try {
       setIsLoading(true)
       const data = await getAllBookings()
@@ -81,44 +81,47 @@ export default function BookingManager() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [statusFilter])
   
   useEffect(() => {
     fetchBookings()
-  }, [])
+  }, [fetchBookings])
   
   // Filtra le prenotazioni
-  const filterBookings = (
-    bookingList: CallBooking[], 
-    statusFilterValue: string
-  ) => {
-    let filtered = [...bookingList] // Crea una copia per non mutare l'originale
-    
-    // Applica filtro per stato
-    if (statusFilterValue !== "all") {
-      filtered = filtered.filter(booking => booking.status === statusFilterValue)
-    }
-    
-    // Applica ordinamento
-    filtered.sort((a, b) => {
-      try {
-        const dateA = new Date(`${a.date}T${a.time_slot.split(' - ')[0]}`)
-        const dateB = new Date(`${b.date}T${b.time_slot.split(' - ')[0]}`)
-        
-        return sortDirection === "asc" 
-          ? dateA.getTime() - dateB.getTime() 
-          : dateB.getTime() - dateA.getTime()
-      } catch {
-        return 0
+  const filterBookings = useCallback(
+    (
+      bookingList: CallBooking[], 
+      statusFilterValue: string
+    ) => {
+      let filtered = [...bookingList] // Crea una copia per non mutare l'originale
+      
+      // Applica filtro per stato
+      if (statusFilterValue !== "all") {
+        filtered = filtered.filter(booking => booking.status === statusFilterValue)
       }
-    })
-    
-    setFilteredBookings(filtered)
-  }
+      
+      // Applica ordinamento
+      filtered.sort((a, b) => {
+        try {
+          const dateA = new Date(`${a.date}T${a.time_slot.split(' - ')[0]}`)
+          const dateB = new Date(`${b.date}T${b.time_slot.split(' - ')[0]}`)
+          
+          return sortDirection === "asc" 
+            ? dateA.getTime() - dateB.getTime() 
+            : dateB.getTime() - dateA.getTime()
+        } catch {
+          return 0
+        }
+      })
+      
+      setFilteredBookings(filtered)
+    },
+    [sortDirection]
+  )
   
   useEffect(() => {
     filterBookings(bookings, statusFilter)
-  }, [bookings, statusFilter, sortDirection])
+  }, [bookings, statusFilter, sortDirection, filterBookings])
   
   // Aggiorna lo stato di una prenotazione
   const handleUpdateStatus = async (id: string, status: BookingStatus) => {

@@ -53,12 +53,15 @@ import {
 
 // Categorie di progetto di esempio
 const PROJECT_CATEGORIES = [
-  "Riqualificazione Verde",
-  "Gestione Rifiuti",
-  "Impianti di Riciclaggio",
-  "Servizi Sociali",
-  "Pulizia Ambientale",
-  "Trasporti Sostenibili",
+  "Sfalcio",
+  "Alberi",
+  "Edilizia",
+  "Scavi",
+  "Pulizia",
+  "Trasporti",
+  "Manutenzioe",
+  "Aree verdi",
+  "Siepi",
   "Altro"
 ]
 

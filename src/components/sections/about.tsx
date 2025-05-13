@@ -1,4 +1,4 @@
-import Image from "next/image"
+//import Image from "next/image"
 import { Leaf, Users } from "lucide-react"
 
 export default function About() {

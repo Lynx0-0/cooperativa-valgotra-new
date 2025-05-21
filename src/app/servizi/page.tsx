@@ -220,9 +220,6 @@ export default function ServiziPage() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button asChild variant="outline" className="bg-white text-green-700 hover:bg-gray-100 border-white">
-              <Link href="/contatti">Contattaci</Link>
-            </Button>
-            <Button asChild className="bg-transparent border-white hover:bg-white/10">
               <Link href="/prenota-chiamata">Prenota una Chiamata</Link>
             </Button>
           </div>
